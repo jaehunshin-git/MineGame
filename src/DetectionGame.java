@@ -7,6 +7,7 @@ public class DetectionGame {
     public static Map map;
     public static int width;
     public static int num_mine;
+    public static int attempt;
 
     public static void main(String []args){
         int find=0;
@@ -16,6 +17,9 @@ public class DetectionGame {
             find += guess();
 
         System.out.println("Success found "+find+" mines !");
+        System.out.println("You tried " + attempt + " times to find " + num_mine + " mines !");
+        double rate = num_mine / (double)attempt * 100;
+        System.out.printf("Mine Detection Rate: %.2f%%\n", rate);
 
     }
 
@@ -48,19 +52,20 @@ public class DetectionGame {
 
     public static int guess() {
         Scanner scan = new Scanner (System.in);
-        System.out.print(" Enter x coordinate(0 ~ "+width+") :");
+        System.out.print(" Enter x coordinate(0 ~ "+ (width - 1)+") :");
         int x = scan.nextInt();
         while ((x < 0) || (x >= width)) {
             System.out.println(" Invalid x, enter a new x coordinate");
             x = scan.nextInt();
         }
-        System.out.print(" Enter y coordinate(0 ~ "+width+") :");
+        System.out.print(" Enter y coordinate(0 ~ "+ (width - 1)+") :");
         int y = scan.nextInt();
         while ((y < 0) || (y >= width)) {
             System.out.println(" Invalid y, enter a new y coordinate");
             y = scan.nextInt();
         }
 
+        attempt++;  // 시도한 횟수 증가 +1
         if (map.checkMine(x,y) >= 0) {
             map.updateMap(x,y);
             return 1;
